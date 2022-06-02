@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<title>Page Title</title>
+<style>
+    header div {
+        background-color: #F5F2F0;
+        padding: 20px;
+        display: list-item;
+    }
+    header div h2 {
+        float: left;
+    }
+
+    header div .btn {
+        float: right;
+    }
+    .card {
+        width: 15rem;
+        margin-top: 20px;
+        margin-right: 20px;
+    }
+    .alert {
+        margin-top: 15px;
+    }
+    .prd {
+        border-bottom: 1px solid #d3d3d3;
+    }
+    .total {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .price {
+        font-weight: bold;
+    }
+    .back-btn {
+        text-decoration: none;
+    }
+
+</style>
+</head>
+<body>
+<header>
+    <div>
+        <h2><a href="" class="back-btn"><<< </a><span class="btn-txt">Product List</span></h2>
+        <button type="button" class="btn btn-info cart">Cart</button>
+    </div>
+</header>
+<div class="container product-list">
+    <div class="row card-cont">
+        <div class="alert alert-success" role="alert"></div>
+    </div>
+</div>
+<div class="container cart-cont">
+    <div class="row">
+        <div class="cart-list">
+
+        </div>
+        <div class="total"> </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.product-list').show();
+    $('.cart-cont').hide();
+    $('.alert').hide();
+    $('.back-btn').hide();
+    var productList = [{name:"Product_1", price:20, desc:"This is product 1 it is the application product."},
+    {name:"Product_2", price:10, desc:"This is product 2 it is the application product."},
+    {name:"Product_3", price:25, desc:"This is product 3 it is the application product."},
+    {name:"Product_4", price:45, desc:"This is product 4 it is the application product."},
+    {name:"Product_5", price:50, desc:"This is product 5 it is the application product."},
+    {name:"Product_6", price:75, desc:"This is product 6 it is the application product."},
+    {name:"Product_7", price:63, desc:"This is product 7 it is the application product."},
+    {name:"Product_8", price:40, desc:"This is product 8 it is the application product."}
+    ];
+    var selectedProduct = [];
+    
+    $.each(productList, function(i, prd){
+        var card = ` <div class="card col-md-3">
+                <img class="card-img-top" src="..." alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">${prd.name}</h5>
+                  <p class="card-text">${prd.desc}</p>
+                  <span>Price $${prd.price}  </span><a href="#" class="btn btn-primary" id="cart-${i}">Add to Cart</a>
+                </div>
+              </div>`
+         $(".card-cont").append(card);
+    });
+    $('a[id^="cart-"]').click(function(elem){
+        index = parseInt($(this).attr('id').split('-')[1]);
+        selectedProduct.push(productList[index]);
+        $('.alert').show().text(`${productList[index].name} added to cart successfully`)
+        $('.alert').text()
+        $('.cart').text(`${selectedProduct.length} Cart`);
+        setTimeout( function(){$('.alert').hide()},4000);
+    });
+    $('.cart').click(function() {
+        $('.product-list').hide();
+        $('.cart-cont').show();
+        $('.back-btn').show();
+        $('.btn-txt').text(`Cart Items`)
+        var total = 0;
+        $.each(selectedProduct, function(i, prd){
+        var cart = ` <div class="prd">
+                <h4>${prd.name}</h4>
+                <p>${prd.desc}</p>
+                <p class="price">Price= $${prd.price}</p>
+            </div> `
+            $(".cart-list").append(cart);
+            total += prd.price;
+        });
+        $('.total').text(`Total= $${total}`);
+    });
+
+    $('.back-btn').click(function() {
+        $('.product-list').show();
+        $('.cart-cont').hide();
+        $('.back-btn').hide();
+        $('.btn-txt').text(`Product List`)
+        $('.cart').text(`${selectedProduct.length} Cart`);
+    });
+</script>
+</body>
+</html>
